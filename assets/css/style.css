@@ -332,20 +332,50 @@ main {
 }
 
 .sidebar.active {
-  max-height: 405px;
+  /* Aumentamos altura para asegurar que quepan todos los contactos */
+  max-height: -webkit-fill-available;
 }
 
 .sidebar-info {
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   gap: 15px;
+  /* Margen extra a la derecha para que el nombre no choque con el botón */
+  padding-right: 20px;
 }
 
 .avatar-box {
   background: var(--bg-gradient-onyx);
+  background-color: var(--eerie-black-2);
   border-radius: 20px;
+
+  /* --- CORRECCIÓN DE FOTO (MÓVIL) --- */
+  position: relative;
+  width: 80px;
+  /* Ancho fijo */
+  min-width: 80px;
+  /* Evita que se aplaste */
+  height: 80px;
+  /* Cuadrado exacto */
+  overflow: hidden;
+  /* Recorta las esquinas sobrantes */
+  border: 1px solid var(--jet);
+  box-shadow: var(--shadow-1);
+  z-index: 1;
+}
+
+/* Regla nueva para que la imagen se adapte perfectamente */
+.avatar-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Zoom inteligente: llena el cuadro sin deformar la cara */
+  object-position: top center;
+  /* Alineación a la parte superior (cara) */
+  display: block;
 }
 
 .info-content .name {
@@ -354,6 +384,11 @@ main {
   font-weight: var(--fw-500);
   letter-spacing: -0.25px;
   margin-bottom: 10px;
+
+  /* Evita que un nombre muy largo rompa el diseño en móviles */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .info-content .title {
@@ -462,7 +497,6 @@ main {
   color: var(--light-gray-70);
   font-size: 18px;
 }
-
 
 .social-item .social-link:hover {
   color: var(--light-gray);
@@ -953,7 +987,7 @@ main {
 .clients-list {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   gap: 15px;
   margin: 0 -15px;
   padding: 25px;
@@ -1632,7 +1666,7 @@ textarea.form-input::-webkit-resizer {
   }
 
   .sidebar.active {
-    max-height: 584px;
+    max-height: -webkit-fill-available;
   }
 
   .sidebar-info {
@@ -1640,12 +1674,17 @@ textarea.form-input::-webkit-resizer {
   }
 
   .avatar-box {
-    border-radius: 50%;
-    width: 100%;
-    height: auto;
+    /* border-radius: 50%; */
+    /* width: 100%; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     overflow: hidden;
+
+    width: 150px;
+    height: 150px;
+    min-width: 150px;
+    border-radius: 35px;
   }
 
   .avatar-box img {
@@ -2248,7 +2287,7 @@ textarea.form-input::-webkit-resizer {
   }
 
   .avatar-box img {
-    width: 150px;
+    /* width: 150px; */
   }
 
   .info-content .name {
@@ -2490,4 +2529,63 @@ p,
 /* Scrollbar (nice touch) */
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, hsla(265, 90%, 65%, .75), hsla(190, 95%, 55%, .55));
+}
+
+/*-----------------------------------*\
+  #MEDIA QUERIES (Ajustes Escritorio)
+\*-----------------------------------*/
+
+@media (min-width: 1024px) {
+
+  /* Ajuste Sidebar: Volver a diseño vertical grande */
+  .sidebar {
+    max-height: max-content;
+    /* Altura libre */
+    margin-bottom: 0;
+    padding-top: 60px;
+    /* Más espacio arriba */
+    z-index: 1;
+  }
+
+  .sidebar-info {
+    flex-direction: column;
+    /* Pone la foto ARRIBA del texto */
+    gap: 30px;
+    padding-right: 0;
+  }
+
+  .avatar-box {
+    width: 150px;
+    /* Foto más grande */
+    height: 150px;
+    min-width: 150px;
+    border-radius: 35px;
+    /* Bordes más redondeados */
+  }
+
+  .info-content .name {
+    margin-bottom: 15px;
+    text-align: center;
+    white-space: normal;
+    /* Permite saltos de línea */
+    font-size: 24px;
+    /* Nombre más visible */
+  }
+
+  .info-content .title {
+    margin: auto;
+    /* Centrar etiqueta */
+  }
+
+  /* Ocultamos el botón de 'abrir' porque en escritorio siempre está abierto */
+  .info_more-btn {
+    display: none;
+  }
+
+  /* Hacemos visible la info extra siempre */
+  .sidebar-info_more {
+    opacity: 1;
+    visibility: visible;
+  }
+
 }
